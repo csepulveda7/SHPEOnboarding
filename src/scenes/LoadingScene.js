@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Animated,
   ActivityIndicator,
+  Dimensions,
+  StatusBar
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
@@ -13,15 +15,14 @@ import {Actions} from 'react-native-router-flux';
 /* Logo */
 import Logo from '../images/Logo.png';
 
-const switchToAuth = () => {
-  Actions.replace('auth')
+const switchToWelcome = () => {
+  Actions.push('welcome')
 };
 
 class LoadingScene extends Component {
   state = {
     LogoAnime: new Animated.Value(0),
     LogoText: new Animated.Value(0),
-    loadingSpinner: false,
   };
 
   componentDidMount() {
@@ -30,54 +31,38 @@ class LoadingScene extends Component {
       Animated.spring(LogoAnime, {
         toValue: 1,
         tension: 10,
-        friction: 2,
-        duration: 1000,
+        friction: 3,
+        duration: 2000,
+        useNativeDriver: true,
       }).start(),
 
       Animated.timing(LogoText, {
         toValue: 1,
-        duration: 1200,
+        duration: 2500,
+        useNativeDriver: true,
       }),
     ]).start(() => {
-      this.setState({
-        loadingSpinner: true,
-      });
-
-      setTimeout(switchToAuth, 1500);
+      setTimeout(switchToWelcome, 1500);
     });
   }
 
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar translucent backgroundColor="transparent" />
         <Animated.View
           style={{
-            opacity: this.state.LogoAnime,
-            top: this.state.LogoAnime.interpolate({
+            translateY: this.state.LogoAnime.interpolate({
               inputRange: [0, 1],
-              outputRange: [80, 0],
+              outputRange: [100, 0],
             }),
           }}>
-          <Image source={Logo} />
-
-          {this.state.loadingSpinner ? (
-            <ActivityIndicator
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              size="large"
-              color="#5257f2"
-            />
-          ) : null}
+          <Image style={styles.logoStyle}
+            source={Logo}
+          />
         </Animated.View>
         <Animated.View style={{opacity: this.state.LogoText}}>
-          <Text style={styles.logoText}> LogoText </Text>
+          <Text style={styles.logoText}> Bienvenidos </Text>
         </Animated.View>
       </View>
     );
@@ -89,16 +74,21 @@ export default LoadingScene;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5257F2',
+    backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   logoText: {
     color: '#FFFFFF',
-    fontFamily: 'GoogleSans-Bold',
+    fontFamily: 'Poppins-Light',
     fontSize: 30,
-    marginTop: 29.1,
+    marginTop: 5,
     fontWeight: '300',
+  },
+
+  logoStyle: {
+    height: 300,
+    width: 300
   },
 });
