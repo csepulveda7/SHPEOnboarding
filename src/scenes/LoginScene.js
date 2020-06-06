@@ -9,9 +9,9 @@ class LoginScene extends Component {
     Actions.push('reset')
   };
 
-  // switchToRegistration = () => {
-  //   Actions.push('Registration')
-  // };
+  switchToRegistration = () => {
+    Actions.push('register')
+  };
 
   render() {
     return (
@@ -49,8 +49,8 @@ class LoginScene extends Component {
             <Text style={ styles.subButton}>
               Don't have an account?
             </Text>
-                <Button block style={styles.mainBtn}>
-                  {/* onPress={this.switchToRegistration} */}
+                <Button block style={styles.mainBtn}
+                  onPress={this.switchToRegistration}>
                   <Text style={styles.btnText}>Register</Text>
                 </Button>
           </View>
